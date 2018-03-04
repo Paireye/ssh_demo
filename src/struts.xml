@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="user-struts" namespace="/" extends="json-default">
+
+		<!-- 配置过滤器，必须要配置默认的过滤器 -->
+		<interceptors>
+			<interceptor name="userLoginInterceptor"
+				class="com.paireye.web.interceptor.UserLoginInterceptor" />
+			<interceptor-stack name="userStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="userLoginInterceptor">
+					<param name="excludeMethods">login</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 全局的result -->
+		<global-results>
+			<result name="login">login.jsp</result>
+		</global-results>
+
+		<action name="user*" class="com.paireye.web.action.UserAction"
+			method="{1}">
+			<result name="success">/main.jsp</result>
+			<result name="error">/login.jsp</result>
+			<result name="main">/main.jsp</result>
+			<result name="register">/register.jsp</result>
+			<interceptor-ref name="userStack" />
+		</action>
+
+	</package>
+
+
+</struts>
